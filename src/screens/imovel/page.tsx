@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+
+import ReactPlayer from "react-player";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
-import ReactPlayer from "react-player";
 
 import {
   faWifi,
@@ -51,6 +53,7 @@ interface IProps {
   complemento?: string | null;
   coverImage?: string | null;
   precoLocacao?: number | null;
+  precoDiaria?: number | null;
   recommended?: boolean | null;
   maxConvidado?: number | null;
   video?: string | null;
@@ -95,6 +98,7 @@ interface IProps {
   quadra?: boolean | null;
   campo_areia?: boolean | null;
   arcondicionado?: boolean | null;
+  psicina_aquecida?: boolean | null;
   ventilador?: boolean | null;
   quiosque?: boolean | null;
   imagens: [
@@ -202,6 +206,11 @@ export default function Imovel() {
       descricao: "Psicina Adulto",
     },
     {
+      condition: fetchedImoveis?.psicina_aquecida,
+      icon: faSwimmingPool,
+      descricao: "Psicina Aquecida",
+    },
+    {
       condition: fetchedImoveis?.recepcao,
       icon: faUser,
       descricao: "Recepção",
@@ -284,7 +293,8 @@ export default function Imovel() {
           <div>
             <div className="flex w-full justify-center">
               {showPhotos ? (
-                <Swiper
+                <Swiper          
+                      
                   slidesPerView={3}
                   spaceBetween={5}
                   loop={true}
@@ -296,6 +306,7 @@ export default function Imovel() {
                     delay: 2500,
                     disableOnInteraction: false,
                   }}
+                  modules={[Autoplay, Navigation, Pagination]}
                   navigation={true}
                 >
                   {fetchedImoveis.imagens.map((row) => (
@@ -463,7 +474,24 @@ export default function Imovel() {
                         </p>
                       </div>
                     </>
-                  ) : (
+                  ) : fetchedImoveis.tipo === "Diaria" ? (
+                    <>
+                      <div className="flex justify-between py-1">
+                        <p className="font-bold">Diária * </p>
+                        <p className="font-bold">
+                          {fetchedImoveis?.precoDiaria !== null &&
+                          fetchedImoveis?.precoDiaria !== undefined
+                            ? (
+                                fetchedImoveis?.precoDiaria / 100
+                              ).toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              })
+                            : "Valor não disponível"}
+                        </p>
+                      </div>
+                    </>
+                  ): (
                     <>
                       <div className="flex justify-between py-1">
                         <p className="font-bold">Aluguel * </p>

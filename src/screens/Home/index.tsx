@@ -40,11 +40,12 @@ export default function HomePage () {
         <div className="home__container container grid">
           <div className="home__data">
             <h1 className="home__title">
-            Descubra <br /> as Melhores <br /> Áreas de Lazer e Chácaras
+            Descubra <br /> as Melhores <br />Chácaras e  <br /> Áreas de Lazer
             </h1>
 
             <p className="home__description">
-            Encontre as melhores áreas de lazer e chácaras que combinam com você com muita facilidade. Esqueça todas as dificuldades em encontrar o local ideal para seus momentos de lazer.
+            Encontre os melhores espaços para festa de toa a região, são Chácaras e Áreas de Lazer que combinam com sua ocasião.
+Esqueça todas as dificuldade em encontrar o local ideal para seus momentos de lazer, na CODE você encontra!.
             </p>
             {/* 
                 <div className="div home__value">
@@ -102,7 +103,7 @@ export default function HomePage () {
             <img src="/logo3.png" alt="Construtora Parceira" />
           </div> */}
           <div className="logos__img">
-            <img src="/logo4.png" alt="Construtora Parceira" />
+            <img src="/logo4.jpeg" alt="Construtora Parceira"/>
           </div>
         </div>
       </section>

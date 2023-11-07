@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Environment } from "../environment";
 
 // Import Swiper styles
@@ -31,6 +31,7 @@ interface IImoveis {
   update_at: Date | null;
   wifi?: boolean | null;
   churrasqueira?: boolean | null;
+  psicina_aquecida?: boolean | null;
   banheiro?: string | null;
   cozinha?: string | null;
   dorm?: string | null;
@@ -50,6 +51,7 @@ interface IImoveis {
   outras_caracteriscas?: string | null;
   tipoImovel: string | null;
   precoVenda?: number | null;
+  precoDiaria?: number | null;
   psicina_adulto?: boolean | null;
   valor_condominio?: number | null;
   valor_iptu?: number | null;
@@ -95,17 +97,22 @@ function Carrousel() {
     getImoveis();
   }, []);
 
-  console.log(imoveis)
   return (
     <div className="popular__container swiper">
       <Swiper
-        slidesPerView={3}
-        spaceBetween={30}
-        modules={[Pagination]}
-        pagination={{
-          clickable: true,
-        }}
-        className="mySwiper"
+          slidesPerView={3}
+          spaceBetween={30}
+          loop={true}
+          pagination={{
+            clickable: true,
+          }}
+          className="mySwiper"
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay, Navigation, Pagination]}
+          navigation={false}
       >
         <div className="swiper-wrapper">
           {imoveis.map((row) => (
@@ -119,9 +126,13 @@ function Carrousel() {
                   pagination={{
                     clickable: true,
                   }}
-                  navigation={true}
-                  modules={[Pagination, Navigation]}
                   className="mySwiper"
+                  autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  }}
+                  modules={[Autoplay, Navigation, Pagination]}
+                  navigation={true}
                 >
                   {row.imagens !== undefined && row.imagens.length > 0 ? (                            
                     row.imagens.map((i) => (
@@ -140,7 +151,7 @@ function Carrousel() {
                   )}
                 </Swiper>
 
-                {row.precoVenda !== null && row.precoLocacao !== null ? (
+                {row.tipoImovel === 'Venda_Locacao' ? (
                   <div className="popular__data">
                     <div className="flex justify-between">
                       <div>
@@ -166,7 +177,7 @@ function Carrousel() {
                     <h3 className="popular__title">{row.tipoImovel}</h3>
                     <p className="popular__description">{row.descricao}</p>
                   </div>
-                ) : row.precoVenda! ? (
+                ) : row.tipo === 'Venda' ? (
                   <div className="popular__data">
                     <h4>Venda</h4>
                     <h2 className="popular__price">
@@ -179,7 +190,7 @@ function Carrousel() {
                     <h3 className="popular__title">{row.tipoImovel}</h3>
                     <p className="popular__description">{row.descricao}</p>
                   </div>
-                ) : (
+                ) : row.tipo === 'Locacao' ? (
                   <div className="popular__data">
                     <h4>Locação</h4>
                     <h2 className="popular__price">
@@ -192,7 +203,20 @@ function Carrousel() {
                     <h3 className="popular__title">{row.tipoImovel}</h3>
                     <p className="popular__description">{row.descricao}</p>
                   </div>
-                )}
+                ) : row.tipo === 'Diaria' ? (
+                  <div className="popular__data">
+                  <h4>Diária</h4>
+                  <h2 className="popular__price">
+                    <span>R$</span>
+                    {` ${(row.precoDiaria! / 100)
+                      .toFixed(2)
+                      .replace(".", ",")}`}
+                  </h2>
+
+                  <h3 className="popular__title">{row.tipoImovel}</h3>
+                  <p className="popular__description">{row.descricao}</p>
+                </div>
+                ): ''}
               </article>
 
               </a>
